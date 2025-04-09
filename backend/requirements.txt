@@ -1,2 +1,4 @@
 Flask
 transformers
+tensorflow
+torch==2.2.2+cu118

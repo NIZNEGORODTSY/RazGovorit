@@ -96,8 +96,18 @@ function checkOutputField() {
     }
 }
 
-function processSimple(text) {
-    return "Упрощённый текст";
+function processSimple(textCur) {
+    fetch("http://46.29.160.85:5000/simplify", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            text: textCur
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data));
 }
 
 function processClear(text) {
