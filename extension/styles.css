@@ -20,7 +20,7 @@ button {
     padding: 8px;
     margin: 5px 0;
     border: none;
-    background: #007bff;
+    background: #613C81;
     color: white;
     cursor: pointer;
     border-radius: 5px;
@@ -28,12 +28,12 @@ button {
 }
 
 button:hover {
-    background: #0056b3;
+    background: #735091;
     transform: translateY(-3px);
 }
 
 button:active {
-    background: #1583c2;
+    background: #815f9e;
 }
 
 textarea {
@@ -88,17 +88,17 @@ input[type="file"] {
   margin-bottom: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background: #007bff;
+  background: #613C81;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .custom-file-upload:hover {
     transform: translateY(-3px);
-    background: #0056b3;
+    background: #735091;
 }
 
 .custom-file-upload:active {
-    background: #1583c2;
+    background: #815f9e;
 }
 
 #settings-btn {
