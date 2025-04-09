@@ -2,8 +2,8 @@ from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 # Загрузка модели и токенизатора
 model_name = "t5-small"
-tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = T5ForConditionalGeneration.from_pretrained(model_name)
+tokenizer = T5Tokenizer.from_pretrained(model_name, legacy=False)
+model = T5ForConditionalGeneration.from_pretrained(model_name, device_map="cpu")
 
 def postprocess_text(text: str) -> str:
     i = 0

@@ -117,16 +117,22 @@ function processClear(text) {
     return "Ясный текст";
 }
 
+let disabled = false;
+
 easyTextBtn.addEventListener("click", async () => {
+    if(disabled) {
+        return;
+    }
+
     checkOutputField();
 
     let outputArea = document.getElementById("textOutput");
     try {
         // Блокируем кнопку на время выполнения запроса
-        easyTextBtn.disabled = true;
+        disabled = true;
         outputArea.textContent = "Упрощаем...";
         
-        const response = await fetch('http://localhost:5000/simplify', {
+        const response = await fetch('http://46.29.160.85:5000/simplify', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -145,7 +151,7 @@ easyTextBtn.addEventListener("click", async () => {
         
     } finally {
         // Разблокируем кнопку
-        button.disabled = false;
+        disabled = false;
     }
 
     // outputArea.value = processSimple(inputArea.value);
