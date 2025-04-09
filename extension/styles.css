@@ -39,11 +39,13 @@ button:active {
 textarea {
     width: 100%;
     min-width: 100%;
+    max-width: 100%;
     padding: 6px;
     margin-bottom: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     height: 100px;
+    min-height: 30px;
 }
 
 

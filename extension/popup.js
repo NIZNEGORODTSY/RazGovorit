@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 var divContent = document.getElementById("content");
 var inputArea = document.getElementById("textInput");
+var easyTextBtn = document.getElementById("easyText")
 
 var isSettings = false;
 
@@ -78,7 +79,7 @@ function checkOutputField() {
     if (!document.getElementById("textOutput")) {
         const outputArea = document.createElement("textarea");
         const clearButton = document.createElement("button");
-        
+
         outputArea.setAttribute("id", "textOutput");
         clearButton.setAttribute("id", "clearOutput");
         clearButton.textContent = "Очистить";
@@ -91,24 +92,69 @@ function checkOutputField() {
             let outputArea = document.getElementById("textOutput");
             divContent.removeChild(outputArea);
             divContent.removeChild(button);
-        
+
         });
     }
 }
 
-function processSimple(text) {
-    return "Упрощённый текст";
-}
+//  async function processSimple(textCur) {
+
+//     let result;
+//     const response = await fetch("http://localhost:5000/simplify", {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//             text: textCur
+//         })
+//     })
+//     const data = response.json()
+//     return data
+// }
 
 function processClear(text) {
     return "Ясный текст";
 }
 
-document.getElementById("easyText").addEventListener("click", () => {
+let disabled = false;
+
+easyTextBtn.addEventListener("click", async () => {
+    if(disabled) {
+        return;
+    }
+
     checkOutputField();
 
     let outputArea = document.getElementById("textOutput");
-    outputArea.value = processSimple(inputArea.value);
+    try {
+        // Блокируем кнопку на время выполнения запроса
+        disabled = true;
+        outputArea.textContent = "Упрощаем...";
+
+        const response = await fetch('http://46.29.160.85:5000/simplify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text: inputArea.value
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.status}`);
+        }
+
+        const data = await response.json();
+        outputArea.textContent = data.result;
+
+    } finally {
+        // Разблокируем кнопку
+        disabled = false;
+    }
+
+    // outputArea.value = processSimple(inputArea.value);
 });
 
 document.getElementById("clearText").addEventListener("click", () => {
