@@ -117,7 +117,10 @@ function processClear(text) {
     return "Ясный текст";
 }
 
+
+
 let disabled = false;
+
 
 easyTextBtn.addEventListener("click", async () => {
     if(disabled) {
@@ -156,6 +159,7 @@ easyTextBtn.addEventListener("click", async () => {
 
     // outputArea.value = processSimple(inputArea.value);
 });
+
 
 document.getElementById("clearText").addEventListener("click", () => {
     checkOutputField();

@@ -27,3 +27,12 @@ def simplify_text(text: str) -> str:
     return postprocess_text(summary)
 
 
+def clear_text(text: str) -> str:
+    inputs = tokenizer("summarize and simplify and paraphrase, every sentence should be less than 15 words: " + text, return_tensors="pt", max_length=512,
+                       truncation=True)
+
+    summary_ids = model.generate(inputs["input_ids"], max_length=150, min_length=50, length_penalty=2.0, num_beams=5,
+                                 early_stopping=True)
+    # Декодирование и вывод результата
+    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    return postprocess_text(summary)
