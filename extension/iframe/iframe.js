@@ -29,7 +29,49 @@ window.addEventListener('message', (event) => {
     document.getElementById("text").innerHTML = event.data.data;
   }
   if (event.data.type === 'trans') {
+
     document.getElementById("trans").innerHTML = event.data.data;
+
+
+    let disabled = false;
+    const easyTextBtn = document.getElementById('easy')
+
+    easyTextBtn.addEventListener("click", async () => {
+        if(disabled) {
+            return;
+        }
+
+        let outputArea = document.getElementById("trans");
+        try {
+            // Блокируем кнопку на время выполнения запроса
+            disabled = true;
+            outputArea.textContent = "Упрощаем...";
+
+            const response = await fetch('http://46.29.160.85:5000/simplify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: inputArea.value
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Ошибка сервера: ${response.status}`);
+            }
+
+            const data = await response.json();
+            outputArea.textContent = data.result;
+
+        } finally {
+            // Разблокируем кнопку
+            disabled = false;
+        }
+
+        // outputArea.value = processSimple(inputArea.value);
+    });
+
   }
 
 });

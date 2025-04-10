@@ -25,3 +25,5 @@ def simplify_text(text: str) -> str:
     # Декодирование и вывод результата
     summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
     return postprocess_text(summary)
+
+
