@@ -15,6 +15,7 @@ def postprocess_text(text: str) -> str:
 
 
 def simplify_text(text: str) -> str:
+    print("упрощение начато")
     # text = "NASA's Perseverance rover has discovered organic molecules in Martian rock samples, suggesting the planet may have once hosted conditions suitable for life. The findings, published in Science, are based on data collected in Jezero Crater, an ancient lakebed. While not direct evidence of life, these compounds indicate complex chemical processes occurred on Mars billions of years ago."
 
     # Токенизация и суммаризация
@@ -24,10 +25,12 @@ def simplify_text(text: str) -> str:
                                  early_stopping=True)
     # Декодирование и вывод результата
     summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    print("упрощение начато")
     return postprocess_text(summary)
 
 
 def clear_text(text: str) -> str:
+    print("изъяснение начато")
     inputs = tokenizer("summarize and simplify and paraphrase, every sentence should be less than 15 words: " + text, return_tensors="pt", max_length=512,
                        truncation=True)
 
@@ -35,4 +38,5 @@ def clear_text(text: str) -> str:
                                  early_stopping=True)
     # Декодирование и вывод результата
     summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    print("изъяснение закончено")
     return postprocess_text(summary)

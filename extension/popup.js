@@ -135,7 +135,7 @@ easyTextBtn.addEventListener("click", async () => {
         disabled = true;
         outputArea.textContent = "Упрощаем...";
 
-        const response = await fetch('http://46.29.160.85:5000/simplify', {
+        const response = await fetch('http://localhost:5000/simplify', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -161,11 +161,40 @@ easyTextBtn.addEventListener("click", async () => {
 });
 
 
-document.getElementById("clearText").addEventListener("click", () => {
+document.getElementById("clearText").addEventListener("click", async () => {
+    if(disabled) {
+        return;
+    }
+
     checkOutputField();
 
     let outputArea = document.getElementById("textOutput");
-    outputArea.value = processClear(inputArea.value);
+    try {
+        // Блокируем кнопку на время выполнения запроса
+        disabled = true;
+        outputArea.textContent = "Упрощаем...";
+
+        const response = await fetch('http://localhost:5000/clearize', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text: inputArea.value
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.status}`);
+        }
+
+        const data = await response.json();
+        outputArea.textContent = data.result;
+
+    } finally {
+        // Разблокируем кнопку
+        disabled = false;
+    }
 });
 
 

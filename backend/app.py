@@ -21,7 +21,7 @@ def test():
 
 
 @app.route("/clearize", methods=["POST"])
-def simplify():
+def clearize():
     data = request.json
     text = data.get("text")
     return jsonify({
