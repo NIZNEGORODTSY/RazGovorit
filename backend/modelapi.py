@@ -1,10 +1,23 @@
 from transformers import T5ForConditionalGeneration, T5Tokenizer
+import torch
+import os
 
 # Загрузка модели и токенизатора
-model_name = "t5-small"
-tokenizer = T5Tokenizer.from_pretrained(model_name, legacy=False)
-model = T5ForConditionalGeneration.from_pretrained(model_name, device_map="cpu")
+model_path = "C:/Users/Kirill/Desktop/techno25/TECHNOSTRELKA_FINAL_2025/backend/my_model"
 
+t = os.path.exists(model_path)
+
+tokenizer = T5Tokenizer.from_pretrained(
+    model_path,
+    tokenizer_file=model_path+"/spiece.model"
+)
+
+model = T5ForConditionalGeneration.from_pretrained(
+    model_path,
+    torch_dtype=torch.float32,
+    device_map="cpu",
+    use_safetensors=True
+)
 
 def postprocess_text(text: str) -> str:
     i = 0
@@ -13,30 +26,33 @@ def postprocess_text(text: str) -> str:
     text = text[i:]
     return text
 
-
 def simplify_text(text: str) -> str:
-    print("упрощение начато")
-    # text = "NASA's Perseverance rover has discovered organic molecules in Martian rock samples, suggesting the planet may have once hosted conditions suitable for life. The findings, published in Science, are based on data collected in Jezero Crater, an ancient lakebed. While not direct evidence of life, these compounds indicate complex chemical processes occurred on Mars billions of years ago."
 
-    # Токенизация и суммаризация
-    inputs = tokenizer("make a summary |" + text, return_tensors="pt", max_length=512, truncation=True)
+    inputs = tokenizer("summarize, simplify and keep the main meaning |" + text, return_tensors="pt", max_length=512, truncation=True).to("cpu")
 
-    summary_ids = model.generate(inputs["input_ids"], max_length=150, min_length=50, length_penalty=2.0, num_beams=5,
-                                 early_stopping=True)
-    # Декодирование и вывод результата
-    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
-    print("упрощение начато")
+    # outputs = model.generate(inputs["input_ids"], max_length=150, min_length=50, length_penalty=2.0, num_beams=5, early_stopping=True)
+    
+    outputs = model.generate(
+        inputs.input_ids,
+        max_length=250,
+        min_length=100,
+        num_beams=4,
+        early_stopping=True
+    )
+
+    summary = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return postprocess_text(summary)
 
+def clearize_text(text: str) -> str:
+    inputs = tokenizer("summarize, simplify and keep the main meaning |" + text, return_tensors="pt", max_length=512, truncation=True).to("cpu")
+    
+    outputs = model.generate(
+        inputs.inputs_ids,
+        max_length=250,
+        min_length=100,
+        num_beams=4,
+        early_stopping=True
+    )
 
-def clear_text(text: str) -> str:
-    print("изъяснение начато")
-    inputs = tokenizer("summarize and simplify and paraphrase, every sentence should be less than 15 words: " + text, return_tensors="pt", max_length=512,
-                       truncation=True)
-
-    summary_ids = model.generate(inputs["input_ids"], max_length=150, min_length=50, length_penalty=2.0, num_beams=5,
-                                 early_stopping=True)
-    # Декодирование и вывод результата
-    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
-    print("изъяснение закончено")
+    summary = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return postprocess_text(summary)
