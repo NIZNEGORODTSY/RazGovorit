@@ -10,7 +10,7 @@ t = os.path.exists(model_path)
 
 tokenizer = T5Tokenizer.from_pretrained(
     model_path,
-    tokenizer_file=model_path+"/spiece.model"
+    tokenizer_file=os.path.join(model_path, "/spiece.model")
 )
 
 model = T5ForConditionalGeneration.from_pretrained(
