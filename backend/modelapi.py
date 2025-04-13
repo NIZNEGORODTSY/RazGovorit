@@ -4,7 +4,7 @@ import os
 
 # Загрузка модели и токенизатора
 
-model_path = os.path.join(os.path.dirname(__file__), "my_model")
+model_path = os.path.join(os.path.dirname(__file__), "my_model/")
 
 t = os.path.exists(model_path)
 
