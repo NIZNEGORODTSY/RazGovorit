@@ -135,7 +135,7 @@ easyTextBtn.addEventListener("click", async () => {
         disabled = true;
         outputArea.textContent = "Упрощаем...";
 
-        const response = await fetch('http://localhost:5000/simplify', {
+        const response = await fetch('http://46.29.160.85:5000/simplify', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -174,7 +174,7 @@ document.getElementById("clearText").addEventListener("click", async () => {
         disabled = true;
         outputArea.textContent = "Упрощаем...";
 
-        const response = await fetch('http://localhost:5000/clearize', {
+        const response = await fetch('http://46.29.160.85:5000/clearize', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

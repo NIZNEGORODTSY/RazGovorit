@@ -3,7 +3,8 @@ import torch
 import os
 
 # Загрузка модели и токенизатора
-model_path = "C:/Users/Kirill/Desktop/techno25/TECHNOSTRELKA_FINAL_2025/backend/my_model"
+
+model_path = os.path.join(os.path.dirname(__file__), "my_model")
 
 t = os.path.exists(model_path)
 
