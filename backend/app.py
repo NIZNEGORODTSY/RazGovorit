@@ -28,5 +28,6 @@ def clearize():
         "result": modelapi.clear_text(text)
     })
 
+# TODO обработка файла
 
 app.run(debug=False, host="0.0.0.0", port=5000)
