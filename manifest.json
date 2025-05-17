@@ -14,20 +14,8 @@
       "run_at": "document_end"
     }
   ],
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "extension/iframe/iframe.html",
-        "extension/iframe/iframe.js",
-        "extension/iframe/iframe.css"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
-    }
-  ],
   "name": "РазГовориить",
-  "version": "1.1",
+  "version": "0.9",
   "description": "TECHNO-FINAL_2025",
   "permissions": [
     "http://46.29.160.85:5000/*",
@@ -50,6 +38,7 @@
     "default_popup": "extension/popup.html",
     "default_icon": {
       "16": "extension/icons/16.png",
+      "32": "extension/icons/32.png",
       "48": "extension/icons/48.png",
       "128": "extension/icons/128.png"
     }

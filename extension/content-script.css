@@ -1,0 +1,18 @@
+.selection-popup {
+  position: absolute;
+  display: none;
+  padding: 8px 16px;
+  background-color: white;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.selection-popup:hover {
+  background-color: #45a049;
+}
