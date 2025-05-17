@@ -1,14 +1,15 @@
-document.addEventListener("DOMContentLoaded", () => {
-    loadBlockedDomains();
-});
+const host = "http://46.29.160.85:5000";
 
-var divContent = document.getElementById("content");
-var inputArea = document.getElementById("textInput");
-var easyTextBtn = document.getElementById("easyText");
-var superEasyTextBtn = document.getElementById("superEasyText");
-var fileUploadBtn = document.getElementById("file-send");
+const divContent = document.getElementById("content");
 
-var isSettings = false;
+const inputArea = document.getElementById("textInput");
+
+const easyTextBtn = document.getElementById("easyText");
+const superEasyTextBtn = document.getElementById("superEasyText");
+
+const fileInput = document.getElementById("file-upload");
+const fileUploadBtn = document.getElementById("file-send");
+const fileInfo = document.getElementById("file-info");
 
 function checkOutputField() {
     if (!document.getElementById("textOutput")) {
@@ -42,32 +43,32 @@ easyTextBtn.addEventListener("click", async () => {
     checkOutputField();
 
     let outputArea = document.getElementById("textOutput");
-    try {
-        // Блокируем кнопку на время выполнения запроса
-        disabled = true;
-        outputArea.textContent = "Упрощаем...";
 
-        const response = await fetch('http://46.29.160.85:5000/simplify', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                text: inputArea.value
-            })
-        });
+    // Блокируем кнопку на время выполнения запроса
+    disabled = true;
+    outputArea.textContent = "Упрощаем...";
 
+    await fetch(`${host}/simplify`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            text: inputArea.value
+        })
+    })
+    .then(response => {
         if (!response.ok) {
             throw new Error(`Ошибка сервера: ${response.status}`);
         }
-
-        const data = await response.json();
+        const data = response.json();
         outputArea.textContent = data.result;
-
-    } finally {
-        // Разблокируем кнопку
-        disabled = false;
-    }
+    })
+    .catch(exception => {
+        console.error("simplify failed:", exception);
+    });
+    // Разблокируем кнопку
+    disabled = false;
 });
 
 
@@ -79,41 +80,68 @@ superEasyTextBtn.addEventListener("click", async () => {
     checkOutputField();
 
     let outputArea = document.getElementById("textOutput");
-    try {
-        // Блокируем кнопку на время выполнения запроса
-        disabled = true;
-        outputArea.textContent = "Упрощаем...";
 
-        const response = await fetch('http://46.29.160.85:5000/clearize', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                text: inputArea.value
-            })
-        });
+    // Блокируем кнопку на время выполнения запроса
+    disabled = true;
+    outputArea.textContent = "Упрощаем...";
 
+    await fetch(`${host}/clearize`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            text: inputArea.value
+        })
+    })
+    .then(response => {
         if (!response.ok) {
             throw new Error(`Ошибка сервера: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data = response.json();
         outputArea.textContent = data.result;
+    })
+    .catch(exception => {
+        console.error("simplify failed:", exception);
+    });
 
-    } finally {
-        // Разблокируем кнопку
-        disabled = false;
+    // Разблокируем кнопку
+    disabled = false;
+});
+
+let file = null;
+
+// Файл выбран
+fileInput.addEventListener("change", (event) => {
+    if (event.target.files.length > 0) {
+        file = event.target.files[0];
+        displayFileInfo(file);
     }
 });
 
-fileUploadBtn.addEventListener("click", async () => {
-    // Обработка файла
+function displayFileInfo(file) {
+    fileInfo.innerHTML = `
+            <p><strong>Name:</strong> ${file.name}</p>
+            <p><strong>Size:</strong> ${(file.size / 1024).toFixed(2)} KB</p>
+        `;
+}
 
-    alert("Пока недоступно")
+fileUploadBtn.addEventListener("click", async () => {
+    if (!file.name.endsWith(".docx")) {
+        alert("Поддерживается только .docx формат\nПожалуйста, выберите другой файл");
+        return;
+    }
+    const formData = new FormData();
+    formData.append("docxFile", file);
+
+    // await fetch("http://46.29.160.85:5000/processFile", {});
+    TODO: // отправка запроса на сервер, получение ответа в виде файла и скачивание его пользователю
+
+    alert("Пока недоступно");
 });
 
-
+let isSettings = false;
 
 document.getElementById("settings-btn").addEventListener("click", () => {
     const settingsDiv = document.getElementById("settings");
