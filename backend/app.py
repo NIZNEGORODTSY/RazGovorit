@@ -1,8 +1,20 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 import modelapi
+from werkzeug.utils import secure_filename
+from docx import Document
+import os
 
 app = Flask("ServerModel")
 
+app.config["UPLOAD_FOLDER"] = "temp_files"
+
+ALLOWED_EXTENSIONS = [
+    "docx"
+]
+
+def allowed_file(filename: str):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route("/simplify", methods=["POST"])
 def simplify():
@@ -28,6 +40,32 @@ def clearize():
         "result": modelapi.clear_text(text)
     })
 
-# TODO обработка файла
+
+@app.route("/processFile", methods=["POST"])
+def process_file():
+    if 'docxFile' not in request.files:
+        return jsonify({ 'error': 'No file part' }), 400
+    
+    file = request.files['docxFile']
+
+    if file.filename == '':
+        return jsonify({ 'error': 'No selected file' }), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        file.save(filepath)
+
+        try:
+            doc = Document(filepath)
+            text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+            text_res = modelapi.simplify_text(text)
+
+            # TODO сохранить ответ (text_res) в виде файла .txt и отправить его обратно
+
+        except Exception as e:
+            return jsonify({ "error": f"Error processing file: {str(e)}" }), 500
+    else:
+        return jsonify({ 'error': 'Filetype is not allowed' }), 400
 
 app.run(debug=False, host="0.0.0.0", port=5000)

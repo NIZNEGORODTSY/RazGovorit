@@ -135,8 +135,39 @@ fileUploadBtn.addEventListener("click", async () => {
     const formData = new FormData();
     formData.append("docxFile", file);
 
-    // await fetch("http://46.29.160.85:5000/processFile", {});
     // TODO отправка запроса на сервер, получение ответа в виде файла и скачивание его пользователю
+    await fetch(`${host}/processFile`, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.status}`);
+        }
+
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            return response.json();
+        } else {
+            return response.blob();
+        }
+    })
+    .then(data => {
+        if (data instanceof Blob) {
+            const url = window.URL.createObjectURL(data);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "processed.txt";
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+    })
+    .catch(exception => {
+        console.error('file simplify failed:', exception);
+    })
 
     alert("Пока недоступно");
 });
