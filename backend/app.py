@@ -62,7 +62,7 @@ def process_file():
 
         try:
             doc = Document(filepath)
-            text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+            text = "; ".join([paragraph.text for paragraph in doc.paragraphs])
             text_res = modelapi.simplify_text(text)
             print(text)
             print("***********************")
