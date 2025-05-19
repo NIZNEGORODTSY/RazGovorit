@@ -75,6 +75,7 @@ def process_file():
             )
 
         except Exception as e:
+            print(e)
             return jsonify({ "error": f"Error processing file: {str(e)}" }), 500
     else:
         return jsonify({ 'error': 'Filetype is not allowed' }), 400

@@ -142,7 +142,8 @@ fileUploadBtn.addEventListener("click", async () => {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error(`Ошибка сервера: ${response.status}`);
+            const data = response.json()
+            throw new Error(`Ошибка сервера: ${data}`);
         }
 
         /*const contentType = response.headers.get("content-type");
