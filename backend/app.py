@@ -64,6 +64,9 @@ def process_file():
             doc = Document(filepath)
             text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
             text_res = modelapi.simplify_text(text)
+            print(text)
+            print("***********************")
+            print(text_res)
 
             # TODO сохранить ответ (text_res) в виде файла .txt и отправить его обратно
             with open(os.path.join(app.config["UPLOAD_FOLDER"], "processed_" + filename + ".txt"), "w") as fd:
