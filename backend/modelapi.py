@@ -35,8 +35,8 @@ def simplify_text(text: str) -> str:
     
     outputs = model.generate(
         inputs.input_ids,
-        #max_length=250,
-        #min_length=100,
+        max_length=1000,
+        min_length=10,
         num_beams=4,
         early_stopping=True
     )
