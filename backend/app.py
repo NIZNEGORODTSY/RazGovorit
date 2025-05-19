@@ -4,6 +4,10 @@ from werkzeug.utils import secure_filename
 from docx import Document
 import os
 
+# Директория для всяких временных файлов
+if not os.path.exists("temp_files"):
+    os.makedirs("temp_files")
+
 app = Flask("ServerModel")
 
 app.config["UPLOAD_FOLDER"] = "temp_files"
@@ -43,16 +47,16 @@ def clearize():
 
 @app.route("/processFile", methods=["POST"])
 def process_file():
-    if 'docxFile' not in request.files:
-        return jsonify({ 'error': 'No file part' }), 400
+    if "docxFile" not in request.files:
+        return jsonify({ "error": "No file part" }), 400
     
-    file = request.files['docxFile']
+    file = request.files["docxFile"]
 
-    if file.filename == '':
-        return jsonify({ 'error': 'No selected file' }), 400
+    if file.filename == "":
+        return jsonify({ "error": "No selected file" }), 400
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 
         file.save(filepath)
 
@@ -62,10 +66,20 @@ def process_file():
             text_res = modelapi.simplify_text(text)
 
             # TODO сохранить ответ (text_res) в виде файла .txt и отправить его обратно
+            with open(os.path.join(app.config["UPLOAD_FOLDER"], filename + "_processed")) as fd:
+                fd.write(text_res)
+            
+            return send_file(
+                os.path.join(app.config["UPLOAD_FOLDER"], filename + "_processed"),
+                as_attachment=True
+            )
 
         except Exception as e:
             return jsonify({ "error": f"Error processing file: {str(e)}" }), 500
     else:
         return jsonify({ 'error': 'Filetype is not allowed' }), 400
 
-app.run(debug=False, host="0.0.0.0", port=5000)
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5000)
+else:
+    app.run(debug=False, host="0.0.0.0", port=5000)

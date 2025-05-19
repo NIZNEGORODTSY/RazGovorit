@@ -145,14 +145,14 @@ fileUploadBtn.addEventListener("click", async () => {
             throw new Error(`Ошибка сервера: ${response.status}`);
         }
 
-        const contentType = response.headers.get("content-type");
+        /*const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
             return response.json();
         } else {
             return response.blob();
-        }
+        }*/
     })
-    .then(data => {
+    /*.then(data => {
         if (data instanceof Blob) {
             const url = window.URL.createObjectURL(data);
             const a = document.createElement('a');
@@ -164,12 +164,10 @@ fileUploadBtn.addEventListener("click", async () => {
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
         }
-    })
+    })*/
     .catch(exception => {
         console.error('file simplify failed:', exception);
     })
-
-    alert("Пока недоступно");
 });
 
 let isSettings = false;
