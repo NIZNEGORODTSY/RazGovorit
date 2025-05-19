@@ -45,6 +45,19 @@ def clearize():
     })
 
 
+def get_all_text(doc_element):
+    text = []
+    if hasattr(doc_element, 'text'):
+        text.append(doc_element.text)
+    if hasattr(doc_element, 'paragraphs'):
+        for paragraph in doc_element.paragraphs:
+            text.append(paragraph.text)
+    if hasattr(doc_element, 'tables'):
+        for table in doc_element.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    text.append(get_all_text(cell))
+
 @app.route("/processFile", methods=["POST"])
 def process_file():
     if "docxFile" not in request.files:
@@ -62,7 +75,8 @@ def process_file():
 
         try:
             doc = Document(filepath)
-            text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+            
+            text = "\n".join(get_all_text(doc))
             text_res = modelapi.simplify_text(text)
             print(text)
             print("***********************")
