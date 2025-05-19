@@ -57,6 +57,7 @@ def get_all_text(doc_element):
             for row in table.rows:
                 for cell in row.cells:
                     text.append(get_all_text(cell))
+    return text
 
 @app.route("/processFile", methods=["POST"])
 def process_file():
