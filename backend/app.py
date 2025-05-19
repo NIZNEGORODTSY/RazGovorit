@@ -66,7 +66,7 @@ def process_file():
             text_res = modelapi.simplify_text(text)
 
             # TODO сохранить ответ (text_res) в виде файла .txt и отправить его обратно
-            with open(os.path.join(app.config["UPLOAD_FOLDER"], "processed_" + filename + ".txt")) as fd:
+            with open(os.path.join(app.config["UPLOAD_FOLDER"], "processed_" + filename + ".txt"), "w") as fd:
                 fd.write(text_res)
             
             return send_file(
