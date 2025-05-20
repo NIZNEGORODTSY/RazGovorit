@@ -215,4 +215,5 @@ chrome.storage.local.get(['selectedText'], (result) => {
     if (result.selectedText) {
         inputArea.textContent = result.selectedText;
     }
+    chrome.storage.local.set({ "selectedText": "" })
 });
