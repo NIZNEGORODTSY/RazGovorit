@@ -28,7 +28,7 @@ def simplify():
     print(res)
     return jsonify({
         "result": res
-    })
+    }), 200, {'Content-Type': 'application/json'}
 
 
 @app.route("/test", methods=["POST"])
@@ -44,7 +44,7 @@ def clearize():
     text = data.get("text")
     return jsonify({
         "result": modelapi.clear_text(text)
-    })
+    }), 200, {'Content-Type': 'application/json'}
 
 
 @app.route("/processFile", methods=["POST"])
