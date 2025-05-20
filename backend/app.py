@@ -24,19 +24,9 @@ def allowed_file(filename: str):
 def simplify():
     data = request.json
     text = data.get("text")
-    res = modelapi.simplify_text(text)
-    print(res)
     return jsonify({
-        "result": res
+        "result": modelapi.simplify_text(text)
     }), 200, {'Content-Type': 'application/json'}
-
-
-@app.route("/test", methods=["POST"])
-def test():
-    return jsonify({
-        "result": "testresult"
-    })
-
 
 @app.route("/clearize", methods=["POST"])
 def clearize():
@@ -66,6 +56,8 @@ def process_file():
             doc = Document(filepath)
             text = "; ".join([paragraph.text for paragraph in doc.paragraphs])
             text_res = modelapi.simplify_text(text)
+
+            # Логи
             print(text)
             print("***********************")
             print(text_res)

@@ -57,11 +57,11 @@ easyTextBtn.addEventListener("click", async () => {
             text: inputArea.value
         })
     })
-    .then(response => {
+    .then(async response => {
         if (!response.ok) {
             throw new Error(`Ошибка сервера: ${response.status}`);
         }
-        const data = response.json();
+        const data = await response.json();
         outputArea.textContent = data.result;
     })
     .catch(exception => {
@@ -94,12 +94,12 @@ superEasyTextBtn.addEventListener("click", async () => {
             text: inputArea.value
         })
     })
-    .then(response => {
+    .then(async response => {
         if (!response.ok) {
             throw new Error(`Ошибка сервера: ${response.status}`);
         }
 
-        const data = response.json();
+        const data = await response.json();
         outputArea.textContent = data.result;
     })
     .catch(exception => {

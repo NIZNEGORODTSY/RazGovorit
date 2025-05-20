@@ -18,7 +18,6 @@
   "version": "0.9",
   "description": "TECHNO-FINAL_2025",
   "permissions": [
-    "http://46.29.160.85:5000/*",
     "cookies",
     "storage",
     "activeTab",
