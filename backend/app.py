@@ -24,8 +24,10 @@ def allowed_file(filename: str):
 def simplify():
     data = request.json
     text = data.get("text")
+    res = modelapi.simplify_text(text)
+    print(res)
     return jsonify({
-        "result": modelapi.simplify_text(text)
+        "result": res
     })
 
 
