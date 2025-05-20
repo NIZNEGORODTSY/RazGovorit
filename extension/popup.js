@@ -135,7 +135,6 @@ fileUploadBtn.addEventListener("click", async () => {
     const formData = new FormData();
     formData.append("docxFile", file);
 
-    // TODO отправка запроса на сервер, получение ответа в виде файла и скачивание его пользователю
     await fetch(`${host}/processFile`, {
         method: "POST",
         body: formData

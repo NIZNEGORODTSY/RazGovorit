@@ -54,7 +54,7 @@ def simplify_text(text: str) -> str:
 
     # summary = tokenizer.decode(outputs[0], skip_special_tokens=True)
     input_ids = tokenizer(
-        ["Упрости и перефразируй текст: " + text],
+        ["Упрости и перефразируй текст и сохрани основное значение текста: " + text],
         max_length=600,
         add_special_tokens=True,
         padding="max_length",
@@ -89,7 +89,7 @@ def clearize_text(text: str) -> str:
 
     # Временно для ясного текста используется тот же запрос
     input_ids = tokenizer(
-        ["Упрости и перефразируй текст: " + text],
+        ["Упрости и перефразируй текст и сохрани основное значение текста: " + text],
         max_length=600,
         add_special_tokens=True,
         padding="max_length",
