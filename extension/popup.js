@@ -72,44 +72,6 @@ easyTextBtn.addEventListener("click", async () => {
 });
 
 
-superEasyTextBtn.addEventListener("click", async () => {
-    if(disabled) {
-        return;
-    }
-
-    checkOutputField();
-
-    let outputArea = document.getElementById("textOutput");
-
-    // Блокируем кнопку на время выполнения запроса
-    disabled = true;
-    outputArea.textContent = "Упрощаем...";
-
-    await fetch(`${host}/clearize`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            text: inputArea.value
-        })
-    })
-    .then(async response => {
-        if (!response.ok) {
-            throw new Error(`Ошибка сервера: ${response.status}`);
-        }
-
-        const data = await response.json();
-        outputArea.textContent = data.result;
-    })
-    .catch(exception => {
-        console.error("simplify failed:", exception);
-    });
-
-    // Разблокируем кнопку
-    disabled = false;
-});
-
 let file = null;
 
 // Файл выбран

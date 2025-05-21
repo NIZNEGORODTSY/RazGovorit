@@ -2,6 +2,20 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'Farabee';
+    src: url('D:\Phyton\____RazGovorit\extension\fonts\ofont.ru_Farabee.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.title {
+    font-family: 'Palatino Linotype';
+    font-weight: lighter;
+    font-size: 30px;
+}
+
 body {
     font-family: Arial, sans-serif;
     width: 270px;
@@ -25,6 +39,9 @@ button {
     cursor: pointer;
     border-radius: 5px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Palatino Linotype';
+    font-weight: lighter;
+    font-size: 15px;
 }
 
 button:hover {
@@ -47,6 +64,13 @@ textarea {
     height: 100px;
     min-height: 30px;
 }
+
+label {
+    font-family: 'Palatino Linotype';
+    font-weight: lighter;
+    font-size: 15px;
+}
+
 
 
 .wrapper {
@@ -109,4 +133,9 @@ input[type="file"] {
 .settings {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     transform: translateY(-3px);
+}
+
+.logo {
+    margin-top: -30%:
+    margin-bottom: -20%;
 }
