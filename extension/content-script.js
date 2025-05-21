@@ -49,10 +49,3 @@ popupButton.addEventListener('click', function() {
     
     popupButton.style.display = 'none';
 });
-
-// Скрываем кнопку при клике вне ее
-document.addEventListener('click', function(e) {
-    if (e.target !== popupButton) {
-        popupButton.style.display = 'none';
-    }
-});
