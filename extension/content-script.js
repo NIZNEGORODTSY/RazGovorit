@@ -10,32 +10,37 @@ popupButton.appendChild(popupImg);
 let selectionTimeout;
 
 // Обработчик выделения текста
-document.addEventListener('selectionchange', function() {
-    const selection = window.getSelection();
-    const selectedText = selection.toString().trim();
+document.addEventListener('selectionchange', () => {
+    chrome.storage.sync.get(["settings_popupBtnCond"], result => {
+        if (result.settings_popupBtnCond == "1") {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+            
+            if (selectedText.length > 0) {
+                clearTimeout(selectionTimeout);
+
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+
+                popupButton.style.display = 'block';
+                popupButton.style.top = `${window.scrollY + rect.top - 40}px`;
+                popupButton.style.left = `${window.scrollX + rect.left + rect.width/2 - 50}px`;
+
+                selectionTimeout = setTimeout(() => {
+                popupButton.style.display = 'block';
+            }, 100);
+            } else {
+                selectionTimeout = setTimeout(() => {
+                popupButton.style.display = 'none';
+                }, 200);
+            }
+        }
+    });
     
-    if (selectedText.length > 0) {
-        clearTimeout(selectionTimeout);
-
-        const range = selection.getRangeAt(0);
-        const rect = range.getBoundingClientRect();
-
-        popupButton.style.display = 'block';
-        popupButton.style.top = `${window.scrollY + rect.top - 40}px`;
-        popupButton.style.left = `${window.scrollX + rect.left + rect.width/2 - 50}px`;
-
-        selectionTimeout = setTimeout(() => {
-        popupButton.style.display = 'block';
-        }, 100);
-    } else {
-        selectionTimeout = setTimeout(() => {
-        popupButton.style.display = 'none';
-        }, 200);
-    }
 });
 
 // Обработчик клика по кнопке
-popupButton.addEventListener('click', function() {
+popupButton.addEventListener('click', () => {
     const selection = window.getSelection();
     const selectedText = selection.toString().trim();
     

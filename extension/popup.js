@@ -185,19 +185,42 @@ document.getElementById("settings-btn").addEventListener("click", () => {
         const path2 = document.getElementById("path2");
 
         const settingsContent = document.createElement("div");
-        settingsContent.setAttribute("id", "settings-content")
+        settingsContent.setAttribute("id", "settings-content");
 
-        const toggleAutoBtn = document.createElement("button");
-        toggleAutoBtn.setAttribute("id", "toggle-auto-btn");
-        toggleAutoBtn.textContent = "В разработке" /*"Автоматическое упрощение"*/
+        const togglePopupButtonBtn = document.createElement("button");
+        togglePopupButtonBtn.setAttribute("id", "toggle-popupbtn-btn");
 
-        svg.setAttribute("class", "bi bi-arrow-return-left")
-        path1.setAttribute("d", "M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5")
-        path1.setAttribute("fill-rule", "evenodd")
-        path2.setAttribute("d", "")
+        chrome.storage.sync.get(["settings_popupBtnCond"], result => {
+            if (result.settings_popupBtnCond == "1") {
+                togglePopupButtonBtn.textContent = "Выкл. кнопку быстрого упрощения";
+            } else {
+                togglePopupButtonBtn.textContent = "Вкл. кнопку быстрого упрощения";
+            }
+        });
+        
+        
 
-        settingsContent.appendChild(toggleAutoBtn);
+        svg.setAttribute("class", "bi bi-arrow-return-left");
+        path1.setAttribute("d", "M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5");
+        path1.setAttribute("fill-rule", "evenodd");
+        path2.setAttribute("d", "");
+
+        settingsContent.appendChild(togglePopupButtonBtn);
         settingsDiv.appendChild(settingsContent);
+
+        togglePopupButtonBtn.addEventListener("click", () => {
+            chrome.storage.sync.get(["settings_popupBtnCond"], result => {
+                let val = result.settings_popupBtnCond
+                if (val == "1") {
+                    val = "0";
+                    togglePopupButtonBtn.textContent = "Вкл. кнопку быстрого упрощения";
+                } else {
+                    val = "1";
+                    togglePopupButtonBtn.textContent = "Выкл. кнопку быстрого упрощения";
+                }
+                chrome.storage.sync.set({ "settings_popupBtnCond": val });
+            });
+        });
     }
     else {
         isSettings = false;
