@@ -16,7 +16,7 @@
   ],
   "name": "РазГовориить",
   "version": "0.9",
-  "description": "TECHNO-FINAL_2025",
+  "description": "Инструмент, который позволяет упрощать сложные формальные тексты в удобный и понятный всем формат.",
   "permissions": [
     "cookies",
     "storage",
